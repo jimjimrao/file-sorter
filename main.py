@@ -1,8 +1,9 @@
-#sorts files into individual folders in the form: month_year 
+#sorts files into individual folders by year 
+print('\n'+"sort_time_3.py") 
 import os, time, datetime, platform , glob, shutil 
 #pip install module
 
-path = '/Users/jimmyrao/Desktop/screenshots/'
+path = '/Users/jimmyrao/Desktop/file_sorter/Favorites/'
 filenames = glob.glob(path+'*')
 print(filenames)
 dictionary = {}
@@ -18,7 +19,9 @@ def win_file(file):
 # file = '/Users/jimmyrao/Desktop/jimmy_kang.jpg'
 # file_time = mac_file(file)
 # file_date = file_time.strftime("%m %Y")
-# print(file_date)
+# file_year = file_time.strftime("%Y")
+# # print(file_date)
+# # print(file_year)
 
 #check operating system (windows or mac)
 osys = platform.system()
@@ -33,11 +36,15 @@ for file in filenames:
         file_time = win_file(file)
     elif operating_system == 'mac':
         file_time = mac_file(file)
-    file_date = file_time.strftime("%m %Y")
-    dictionary[file] = file_date
+    # file_date = file_time.strftime("%m %Y")
+    file_year = file_time.strftime("%Y")
+    dictionary[file] =  file_year
 
-# print(dictionary)
+
+x = dictionary['/Users/jimmyrao/Desktop/file_sorter/Favorites/IMG_3015.JPG']
+print(x)
 log = ''
+print(dictionary)
 
 for key, value in dictionary.items():
     if not os.path.exists(path+value):              # if the directory for the specific date DNE,
