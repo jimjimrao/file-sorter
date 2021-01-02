@@ -1,9 +1,12 @@
-#sorts files into individual folders by year 
-print('\n'+"sort_time_3.py") 
+#sorts files into individual folders by year and then sorts into date
+print('\n'+"sort_time_4.py") 
 import os, time, datetime, platform , glob, shutil 
 #pip install module
 
-path = '/Users/jimmyrao/Desktop/file_sorter/Favorites/'
+path = '/Users/jimmyrao/Desktop/file_sorter/Favorites 2/'
+if os.path.exists(path+'sort_log.txt'):
+    print("ERROR: Already been sorted")
+    exit()
 filenames = glob.glob(path+'*')
 print(filenames)
 dictionary = {}
@@ -38,28 +41,32 @@ for file in filenames:
         file_time = mac_file(file)
     # file_date = file_time.strftime("%m %Y")
     file_year = file_time.strftime("%Y")
-    dictionary[file] =  file_year
+    file_month = file_time.strftime("%m_%b")
+    dictionary[file] =  file_year,file_month
 
 
-x = dictionary['/Users/jimmyrao/Desktop/file_sorter/Favorites/IMG_3015.JPG']
-print(x)
+# x = dictionary['/Users/jimmyrao/Desktop/file_sorter/Favorites/IMG_3015.JPG']
+# print(x)
 log = ''
 print(dictionary)
 
 for key, value in dictionary.items():
-    if not os.path.exists(path+value):              # if the directory for the specific date DNE,
-        os.makedirs(path+value)                      # make a new folder for that directory
+    if not os.path.exists(path+value[0]):              # if the directory for the specific date DNE,
+        os.makedirs(path+value[0])                      # make a new folder for that directory
+        print(path+value[0]+'/'+value[1])
+    if not os.path.exists(path+value[0]+'/'+value[1]):
+        os.makedirs(path+value[0]+'/'+value[1])
     filename = key.split('/')
     filename = filename[-1]
-    if not os.path.exists(path+value+'/'+filename):
-        print(path+value+'/'+filename)
+    if not os.path.exists(path+value[0]+'/'+value[1]+'/'+filename):
+        print(path+value[0]+'/'+value[1]+'/'+filename)
         if os.path.isfile(key):
-            shutil.move(key,path+value+'/'+filename)
-            log = log + key + ' moved to ' + path+value+'/'+filename + '\n' + '\n'
+            shutil.move(key,path+value[0]+'/'+value[1]+'/'+filename)
+            log = log + key + ' moved to ' + path+value[0]+'/'+value[1]+'/'+filename + '\n' + '\n'
         elif os.path.isdir(key):
-            shutil.copytree(key, path+value+'/'+ filename)
+            shutil.copytree(key, path+value[0]+'/'+value[1]+'/'+ filename)
             shutil.rmtree(key)
-            log = log + key + ' moved to ' + path+value+'/'+filename + '\n' + '\n'
- 
-with open(path+'log.txt','w') as f:
+            log = log + key + ' moved to ' + path+value[0]+'/'+value[1]+'/'+filename + '\n' + '\n'
+    
+with open(path+'sort_log.txt','w') as f:
     f.write(log)
