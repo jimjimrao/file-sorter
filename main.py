@@ -1,11 +1,10 @@
-#sorts files into individual folders in the form: day_month_year
-
+#sorts files into individual folders in the form: month_year 
 import os, time, datetime, platform , glob, shutil 
 #pip install module
 
-path = '/Users/jimmyrao/Desktop/screenshots_copy/'
+path = '/Users/jimmyrao/Desktop/screenshots/'
 filenames = glob.glob(path+'*')
-# print(filenames)
+print(filenames)
 dictionary = {}
 #dicitonary = {filename: creation_time}
 
@@ -16,15 +15,14 @@ def win_file(file):
     return datetime.datetime.fromtimestamp(os.path.getctime(file))
 
 #testing
-file = '/Users/jimmyrao/Desktop/jimmy_kang.jpg'
-print(mac_file(file))
-file_time = mac_file(file)
-
-
+# file = '/Users/jimmyrao/Desktop/jimmy_kang.jpg'
+# file_time = mac_file(file)
+# file_date = file_time.strftime("%m %Y")
+# print(file_date)
 
 #check operating system (windows or mac)
 osys = platform.system()
-print(osys)
+# print(osys)
 if osys == 'Windows':
     operating_system = 'win'
 elif osys == 'Darwin':
@@ -35,7 +33,7 @@ for file in filenames:
         file_time = win_file(file)
     elif operating_system == 'mac':
         file_time = mac_file(file)
-    file_date = file_time.strftime("%d %m %Y")
+    file_date = file_time.strftime("%m %Y")
     dictionary[file] = file_date
 
 # print(dictionary)
