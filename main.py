@@ -1,14 +1,27 @@
 # asks user for folder file path
 # sorts files into individual folders by year and then sorts into date
-print('\n'+"sort_time_5.py") 
+
+
+print('\n'+"sort_time_6.py") 
 import os, time, datetime, platform , glob, shutil 
 #pip install module
 
-print(platform.system())
 # path = '/Users/jimmyrao/Desktop/file_sorter/Favorites 2/'
-path = input("Type in your folder's file path:") + "/"
+path = input("Type in your folder's file path:")
 
-if os.path.exists(path+'sort_log.txt'):
+#check operating system (windows or mac)
+osys = platform.system()
+
+if osys == 'Windows':
+    operating_system = 'win'
+    path = path + '\\'
+
+elif osys == 'Darwin':
+    operating_system = 'mac'
+    path = path + '/'
+
+#keeps program from sorting again if it has already been done 
+if os.path.exists(path+'sort_log.txt'):        
     print("ERROR: Already been sorted")
     exit()
     
@@ -20,26 +33,18 @@ def mac_file(file):
     return datetime.datetime.fromtimestamp(os.stat(file).st_birthtime)
 
 def win_file(file):
-    return datetime.datetime.fromtimestamp(os.path.getctime(file))
+    return datetime.datetime.fromtimestamp(os.path.getmtime(file))
 
-
-
-#check operating system (windows or mac)
-osys = platform.system()
-
-if osys == 'Windows':
-    operating_system = 'win'
-
-elif osys == 'Darwin':
-    operating_system = 'mac'
 
 for file in filenames:
 
     if operating_system == 'win':
         file_time = win_file(file)
+        breaker = '\\'
 
     elif operating_system == 'mac':
         file_time = mac_file(file)
+        breaker ='/'
 
     file_year = file_time.strftime("%Y")
     file_month = file_time.strftime("%m %b")
@@ -51,25 +56,25 @@ for key, value in dictionary.items():
 
     if not os.path.exists(path+value[0]):              # if the directory for the specific date DNE,
         os.makedirs(path+value[0])                      # make a new folder for that directory
-        print(path+value[0]+'/'+value[1])
+        print(path+value[0]+breaker+value[1])
 
-    if not os.path.exists(path+value[0]+'/'+value[1]):
-        os.makedirs(path+value[0]+'/'+value[1])
+    if not os.path.exists(path+value[0]+breaker+value[1]):
+        os.makedirs(path+value[0]+breaker+value[1])
 
-    filename = key.split('/')
+    filename = key.split(breaker)
     filename = filename[-1]
 
-    if not os.path.exists(path+value[0]+'/'+value[1]+'/'+filename):
-        print(path+value[0]+'/'+value[1]+'/'+filename)
+    if not os.path.exists(path+value[0]+breaker+value[1]+breaker+filename):
+        print(path+value[0]+breaker+value[1]+breaker+filename)
 
         if os.path.isfile(key):
-            shutil.move(key,path+value[0]+'/'+value[1]+'/'+filename)
-            log = log + key + ' moved to ' + path+value[0]+'/'+value[1]+'/'+filename + '\n' + '\n'
+            shutil.move(key,path+value[0]+breaker+value[1]+breaker+filename)
+            log = log + key + ' moved to ' + path+value[0]+breaker+value[1]+breaker+filename + '\n' + '\n'
 
         elif os.path.isdir(key):
-            shutil.copytree(key, path+value[0]+'/'+value[1]+'/'+ filename)
+            shutil.copytree(key, path+value[0]+breaker+value[1]+breaker+ filename)
             shutil.rmtree(key)
-            log = log + key + ' moved to ' + path+value[0]+'/'+value[1]+'/'+filename + '\n' + '\n'
+            log = log + key + ' moved to ' + path+value[0]+breaker+value[1]+breaker+filename + '\n' + '\n'
     
 with open(path+'sort_log.txt','w') as f:
     f.write(log)
