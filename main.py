@@ -50,7 +50,6 @@ for key, value in dictionary.items():
 
     if not os.path.exists(path+value[0]):              # if the directory for the specific date DNE,
         os.makedirs(path+value[0])                      # make a new folder for that directory
-        print(path+value[0]+breaker+value[1])
 
     if not os.path.exists(path+value[0]+breaker+value[1]):
         os.makedirs(path+value[0]+breaker+value[1])
@@ -59,19 +58,20 @@ for key, value in dictionary.items():
     filename = filename[-1]
 
     if not os.path.exists(path+value[0]+breaker+value[1]+breaker+filename):
-        print(path+value[0]+breaker+value[1]+breaker+filename)
+        print(filename + '   was moved to   ' + path+value[0]+breaker+value[1])
 
         if os.path.isfile(key):
             shutil.move(key,path+value[0]+breaker+value[1]+breaker+filename)
-            log = log + key + ' moved to: ' + path+value[0]+breaker+value[1]+breaker+filename + '\n' + '\n'
+           
 
         elif os.path.isdir(key):
             shutil.copytree(key, path+value[0]+breaker+value[1]+breaker+ filename)
             shutil.rmtree(key)
-            log = log + key + ' moved to: ' + path+value[0]+breaker+value[1]+breaker+filename + '\n' + '\n'
+    
+    log = log + '<<'+ key + '>>  moved to:  <<'+ path+value[0]+breaker+value[1]+breaker+filename + '>>'+  '\n' + '\n'
     counter += 1 
 counter = str(counter)
-log = log + 'Sorting complete.'+ counter + ' files were organized. '
+log = log + 'Sorting complete.'+  '\n' + counter + ' files were organized. '
 with open(path+'sort_log.txt','w') as f:
     f.write(log)
     
