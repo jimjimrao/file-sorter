@@ -69,6 +69,9 @@ for key, value in dictionary.items():
             shutil.copytree(key, path+value[0]+breaker+value[1]+breaker+ filename)
             shutil.rmtree(key)
             log = log + key + ' moved to: ' + path+value[0]+breaker+value[1]+breaker+filename + '\n' + '\n'
-    
+    counter += 1 
+counter = str(counter)
+log = log + 'Sorting complete.'+ counter + ' files were organized. '
 with open(path+'sort_log.txt','w') as f:
     f.write(log)
+    
