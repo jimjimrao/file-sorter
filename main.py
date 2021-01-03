@@ -1,12 +1,6 @@
-# asks user for folder file path
-# sorts files into individual folders by year and then sorts into date
-
-
-print('\n'+"sort_time_6.py") 
 import os, time, datetime, platform , glob, shutil 
 #pip install module
 
-# path = '/Users/jimmyrao/Desktop/file_sorter/Favorites 2/'
 path = input("Type in your folder's file path:")
 
 #check operating system (windows or mac)
@@ -51,7 +45,7 @@ for file in filenames:
     dictionary[file] =  file_year,file_month
 
 log = ''
-
+counter = 0
 for key, value in dictionary.items():
 
     if not os.path.exists(path+value[0]):              # if the directory for the specific date DNE,
@@ -69,12 +63,12 @@ for key, value in dictionary.items():
 
         if os.path.isfile(key):
             shutil.move(key,path+value[0]+breaker+value[1]+breaker+filename)
-            log = log + key + ' moved to ' + path+value[0]+breaker+value[1]+breaker+filename + '\n' + '\n'
+            log = log + key + ' moved to: ' + path+value[0]+breaker+value[1]+breaker+filename + '\n' + '\n'
 
         elif os.path.isdir(key):
             shutil.copytree(key, path+value[0]+breaker+value[1]+breaker+ filename)
             shutil.rmtree(key)
-            log = log + key + ' moved to ' + path+value[0]+breaker+value[1]+breaker+filename + '\n' + '\n'
+            log = log + key + ' moved to: ' + path+value[0]+breaker+value[1]+breaker+filename + '\n' + '\n'
     
 with open(path+'sort_log.txt','w') as f:
     f.write(log)
